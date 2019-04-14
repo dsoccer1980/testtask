@@ -1,6 +1,7 @@
 package ru.dsoccer1980.drawing;
 
 import ru.dsoccer1980.Client;
+import ru.dsoccer1980.domain.Curve;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +20,14 @@ public class Frame extends JFrame {
         initCurvesComponent();
         initButtonsPanel();
         initFrame();
+    }
+
+    public void paintCurve(float x1, float y1, float x2, float y2, float x3, float y3, Color color) {
+        curvesComponent.addCurve(new Curve(
+                x1 * width, y1 * height,
+                x2 * width, y2 * height,
+                x3 * width, y3 * height,
+                color));
     }
 
     private void initFrame() {
@@ -47,11 +56,5 @@ public class Frame extends JFrame {
         buttonsPanel.add(button);
     }
 
-    public void paintCurve(float x1, float y1, float x2, float y2, float x3, float y3, Color color) {
-        curvesComponent.addCurve(
-                x1 * width, y1 * height,
-                x2 * width, y2 * height,
-                x3 * width, y3 * height,
-                color);
-    }
+
 }

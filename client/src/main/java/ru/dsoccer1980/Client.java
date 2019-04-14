@@ -48,7 +48,7 @@ public class Client extends Thread {
                     }
 
                     if (commandQueue.size() == 3) {
-                        paintCurve(commandQueue);
+                        paintComponent(commandQueue);
                     }
 
                     System.out.println(stringFromServer);
@@ -63,7 +63,7 @@ public class Client extends Thread {
         }
     }
 
-    private void paintCurve(Queue<Command> commandQueue) {
+    private void paintComponent(Queue<Command> commandQueue) {
         Command command = commandQueue.poll();
         float x1 = Float.valueOf(command.getPointX());
         float y1 = Float.valueOf(command.getPointY());
