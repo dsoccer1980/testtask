@@ -5,25 +5,24 @@ import ru.dsoccer1980.domain.Curve;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class Frame extends JFrame {
 
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final int width = (int) screenSize.getWidth();
     private final int height = (int) screenSize.getHeight();
-    private CurvesComponent curvesComponent;
+    private DrawingPanel drawingPanel;
+    private JButton button;
     private Client client;
 
     public Frame(Client client) {
         this.client = client;
-        initCurvesComponent();
+        initDrawingPanel();
         initFrame();
     }
 
     public void paintCurve(float x1, float y1, float x2, float y2, float x3, float y3, Color color) {
-        curvesComponent.addCurve(new Curve(
+        drawingPanel.addCurve(new Curve(
                 x1 * width, y1 * height,
                 x2 * width, y2 * height,
                 x3 * width, y3 * height,
@@ -32,24 +31,28 @@ public class Frame extends JFrame {
 
     private void initFrame() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setBackground(Color.white);
 
-        add(curvesComponent, BorderLayout.CENTER);
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if ((e.getClickCount() == 2) && !client.isStarted()) {
-                    client.start();
-                }
-            }
-        });
+        add(drawingPanel, BorderLayout.CENTER);
 
         pack();
         setVisible(true);
     }
 
-    private void initCurvesComponent() {
-        curvesComponent = new CurvesComponent();
-        curvesComponent.setPreferredSize(new Dimension(width, height));
+    private void initDrawingPanel() {
+        drawingPanel = new DrawingPanel();
+        drawingPanel.setBackground(Color.white);
+        drawingPanel.setPreferredSize(new Dimension(width, height));
+        initButton();
+        drawingPanel.add(button);
     }
+
+    private void initButton() {
+        button = new JButton("Connect with server");
+        button.addActionListener((listener) -> {
+            client.start();
+            drawingPanel.remove(button);
+        });
+    }
+
+
 }
