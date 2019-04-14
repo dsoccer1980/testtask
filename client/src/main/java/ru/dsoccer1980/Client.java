@@ -17,8 +17,8 @@ public class Client extends Thread {
     private final static int PORT = 29288;
     private Frame frame;
 
-    public Client(Frame frame) {
-        this.frame = frame;
+    public Client() {
+        this.frame = new Frame(this);
     }
 
     @Override

@@ -14,8 +14,10 @@ public class Frame extends JFrame {
     private JButton button;
     private CurvesComponent curvesComponent;
     private JPanel buttonsPanel;
+    private Client client;
 
-    public Frame() {
+    public Frame(Client client) {
+        this.client = client;
         initButton();
         initCurvesComponent();
         initButtonsPanel();
@@ -43,7 +45,7 @@ public class Frame extends JFrame {
 
     private void initButton() {
         button = new JButton("Connect with server");
-        button.addActionListener((listener) -> new Client(this).start());
+        button.addActionListener((listener) -> client.start());
     }
 
     private void initCurvesComponent() {
