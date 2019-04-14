@@ -5,11 +5,12 @@ import ru.dsoccer1980.model.Curve;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.QuadCurve2D;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DrawingPanel extends JPanel {
 
-    private final LinkedList<Curve> curves = new LinkedList<>();
+    private final List<Curve> curves = new ArrayList<>();
 
     protected void addCurve(Curve curve) {
         curves.add(curve);

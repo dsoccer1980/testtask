@@ -31,9 +31,7 @@ public class Frame extends JFrame {
 
     private void initFrame() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
         add(drawingPanel, BorderLayout.CENTER);
-
         pack();
         setVisible(true);
     }

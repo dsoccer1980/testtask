@@ -1,7 +1,7 @@
 package ru.dsoccer1980;
 
-import ru.dsoccer1980.model.Command;
 import ru.dsoccer1980.drawing.Frame;
+import ru.dsoccer1980.model.Command;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -17,12 +17,12 @@ public class Client extends Thread {
     private final int PORT = 29288;
     private Frame frame;
 
-    public static void main(String[] args) {
-        new Client();
+    public Client() {
+        frame = new Frame(this);
     }
 
-    public Client() {
-        this.frame = new Frame(this);
+    public static void main(String[] args) {
+        new Client();
     }
 
     @Override
@@ -31,7 +31,6 @@ public class Client extends Thread {
     }
 
     private void createConnection() {
-
         try (Socket clientSocket = new Socket(HOST, PORT);
              BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
@@ -43,7 +42,7 @@ public class Client extends Thread {
                 String[] record = stringFromServer.split(";");
 
                 if (hasRightFormat(record)) {
-                    if (record[1].equals("start")) {
+                    if ("start".equals(record[1])) {
                         commandQueue.clear();
                     }
                     commandQueue.add(new Command(record[0], record[1], record[2], record[3], record[4]));
@@ -78,7 +77,10 @@ public class Client extends Thread {
     }
 
     private boolean hasRightFormat(String[] record) {
-        return record.length == 5;
+        if (record.length != 5) {
+            return false;
+        }
+        return "start".equals(record[1]) || "move".equals(record[1]);
     }
 
 
