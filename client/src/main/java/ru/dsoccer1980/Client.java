@@ -42,6 +42,9 @@ public class Client extends Thread {
 
                     String[] record = stringFromServer.split(";");
                     if (hasRightFormat(record)) {
+                        if (record[1].equals("start")) {
+                            queue.clear();
+                        }
                         queue.add(new Command(record[0], record[1], record[2], record[3], record[4]));
                     }
 
