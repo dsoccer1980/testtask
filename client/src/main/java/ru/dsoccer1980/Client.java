@@ -15,8 +15,6 @@ public class Client extends Thread {
 
     private final static String HOST = "localhost";
     private final static int PORT = 29288;
-    private static Socket clientSocket;
-    private static BufferedReader in;
     private Frame frame;
 
     public Client(Frame frame) {
@@ -29,41 +27,35 @@ public class Client extends Thread {
     }
 
     private void createConnection() {
-        try {
-            try {
-                clientSocket = new Socket(HOST, PORT);
-                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                String stringFromServer;
-                Queue<Command> commandQueue = new ArrayDeque<>();
 
-                while (clientSocket.isConnected()) {
-                    stringFromServer = in.readLine();
+        try (Socket clientSocket = new Socket(HOST, PORT);
+             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
-                    String[] record = stringFromServer.split(";");
-                    if (hasRightFormat(record)) {
-                        if (record[1].equals("start")) {
-                            commandQueue.clear();
-                        }
-                        commandQueue.add(new Command(record[0], record[1], record[2], record[3], record[4]));
+            String stringFromServer;
+            Queue<Command> commandQueue = new ArrayDeque<>();
+
+            while (clientSocket.isConnected()) {
+                stringFromServer = in.readLine();
+                String[] record = stringFromServer.split(";");
+
+                if (hasRightFormat(record)) {
+                    if (record[1].equals("start")) {
+                        commandQueue.clear();
                     }
-
-                    if (commandQueue.size() == 3) {
-                        paintComponent(commandQueue);
-                    }
-
-                    System.out.println(stringFromServer);
+                    commandQueue.add(new Command(record[0], record[1], record[2], record[3], record[4]));
                 }
-            } finally {
-                clientSocket.close();
-                in.close();
-            }
 
+                if (commandQueue.size() == 3) {
+                    getValuesAndPaintComponent(commandQueue);
+                }
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void paintComponent(Queue<Command> commandQueue) {
+    private void getValuesAndPaintComponent(Queue<Command> commandQueue) {
         Command command = commandQueue.poll();
         float x1 = Float.valueOf(command.getPointX());
         float y1 = Float.valueOf(command.getPointY());

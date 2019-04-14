@@ -11,7 +11,7 @@ public class CurvesComponent extends JComponent {
 
     private final LinkedList<Curve> curves = new LinkedList<>();
 
-    public void addCurve(Curve curve) {
+    protected void addCurve(Curve curve) {
         curves.add(curve);
         repaint();
     }
