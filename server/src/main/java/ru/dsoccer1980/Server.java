@@ -4,16 +4,30 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class Server {
 
     private final int PORT = 29288;
-    private final String FILE_NAME = "test.txt";
+    private final String DEFAULT_FILE_NAME = "test.txt";
+    private String fileName;
+
+    public Server() {
+        fileName = DEFAULT_FILE_NAME;
+    }
+
+    public Server(String fileName) {
+        this.fileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8);
+    }
 
     public static void main(String[] args) {
-        new Server().createConnection();
+        if (args.length == 0) {
+            new Server().createConnection();
+        } else {
+            new Server(args[0]).createConnection();
+        }
     }
 
     private void createConnection() {
@@ -24,8 +38,9 @@ public class Server {
                  BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
                 System.out.println("Client connected");
 
-                try (InputStream inputStream = Objects.requireNonNull(
-                        Server.class.getClassLoader().getResourceAsStream(FILE_NAME), "File not found");
+                try (InputStream inputStream = Objects.requireNonNullElseGet(
+                        Server.class.getClassLoader().getResourceAsStream(fileName),
+                        this::getInputStreamFromExternalFile);
                      BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
                     while (!clientSocket.isClosed()) {
@@ -46,6 +61,7 @@ public class Server {
                 System.out.println("Client disconnected");
             }
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println(e);
         } finally {
             System.out.println("Server shutdown");
@@ -58,6 +74,14 @@ public class Server {
             Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private InputStream getInputStreamFromExternalFile() {
+        try {
+            return new FileInputStream(fileName);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("File not found");
         }
     }
 }
