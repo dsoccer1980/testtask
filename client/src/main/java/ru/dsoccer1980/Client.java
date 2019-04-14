@@ -3,6 +3,7 @@ package ru.dsoccer1980;
 import ru.dsoccer1980.domain.Command;
 import ru.dsoccer1980.drawing.Frame;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,8 +17,7 @@ public class Client extends Thread {
     private final static int PORT = 29288;
     private static Socket clientSocket;
     private static BufferedReader in;
-
-    Frame frame;
+    private Frame frame;
 
     public Client(Frame frame) {
         this.frame = frame;
@@ -73,7 +73,12 @@ public class Client extends Thread {
         command = commandQueue.peek();
         float x3 = Float.valueOf(command.getPointX());
         float y3 = Float.valueOf(command.getPointY());
-        frame.paintCurve(x1, y1, x2, y2, x3, y3);
+        Color color = Color.black;
+        if (Integer.valueOf(command.getColor()) == -16777216) {
+            color = Color.black;
+        }
+
+        frame.paintCurve(x1, y1, x2, y2, x3, y3, color);
     }
 
     //TODO проверить формат

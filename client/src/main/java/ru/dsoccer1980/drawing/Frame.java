@@ -7,22 +7,23 @@ import java.awt.*;
 
 public class Frame extends JFrame {
 
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    int width = (int) screenSize.getWidth();
-    int height = (int) screenSize.getHeight();
+    private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private final int width = (int) screenSize.getWidth();
+    private final int height = (int) screenSize.getHeight();
     private JButton button;
     private CurvesComponent curvesComponent;
     private JPanel buttonsPanel;
 
     public Frame() {
         initButton();
-        initLinesComponent();
+        initCurvesComponent();
         initButtonsPanel();
         initFrame();
     }
 
     private void initFrame() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setBackground(Color.white);
 
         add(buttonsPanel, BorderLayout.EAST);
         add(curvesComponent, BorderLayout.CENTER);
@@ -33,12 +34,10 @@ public class Frame extends JFrame {
 
     private void initButton() {
         button = new JButton("Connect with server");
-        button.addActionListener((listener) -> {
-            new Client(this).start();
-        });
+        button.addActionListener((listener) -> new Client(this).start());
     }
 
-    private void initLinesComponent() {
+    private void initCurvesComponent() {
         curvesComponent = new CurvesComponent();
         curvesComponent.setPreferredSize(new Dimension(width, height));
     }
@@ -48,13 +47,11 @@ public class Frame extends JFrame {
         buttonsPanel.add(button);
     }
 
-    public void paintCurve(float x1, float y1, float x2, float y2, float x3, float y3) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) screenSize.getWidth();
-        int height = (int) screenSize.getHeight();
+    public void paintCurve(float x1, float y1, float x2, float y2, float x3, float y3, Color color) {
         curvesComponent.addCurve(
                 x1 * width, y1 * height,
                 x2 * width, y2 * height,
-                x3 * width, y3 * height);
+                x3 * width, y3 * height,
+                color);
     }
 }

@@ -9,8 +9,8 @@ public class CurvesComponent extends JComponent {
 
     private final LinkedList<Curve> curves = new LinkedList<>();
 
-    public void addCurve(float x1, float y1, float x2, float y2, float x3, float y3) {
-        curves.add(new Curve(x1, y1, x2, y2, x3, y3, Color.black));
+    public void addCurve(float x1, float y1, float x2, float y2, float x3, float y3, Color color) {
+        curves.add(new Curve(x1, y1, x2, y2, x3, y3, color));
         repaint();
     }
 
