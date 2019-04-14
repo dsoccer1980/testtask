@@ -1,6 +1,6 @@
 package ru.dsoccer1980;
 
-import ru.dsoccer1980.domain.Command;
+import ru.dsoccer1980.model.Command;
 import ru.dsoccer1980.drawing.Frame;
 
 import java.awt.*;
@@ -13,8 +13,8 @@ import java.util.Queue;
 
 public class Client extends Thread {
 
-    private final static String HOST = "localhost";
-    private final static int PORT = 29288;
+    private final String HOST = "localhost";
+    private final int PORT = 29288;
     private Frame frame;
 
     public static void main(String[] args) {

@@ -1,7 +1,7 @@
 package ru.dsoccer1980.drawing;
 
 import ru.dsoccer1980.Client;
-import ru.dsoccer1980.domain.Curve;
+import ru.dsoccer1980.model.Curve;
 
 import javax.swing.*;
 import java.awt.*;

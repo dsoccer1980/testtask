@@ -1,4 +1,4 @@
-package ru.dsoccer1980.domain;
+package ru.dsoccer1980.model;
 
 import java.awt.*;
 

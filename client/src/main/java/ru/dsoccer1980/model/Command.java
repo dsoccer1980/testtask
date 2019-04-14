@@ -1,4 +1,4 @@
-package ru.dsoccer1980.domain;
+package ru.dsoccer1980.model;
 
 public class Command {
 
@@ -56,14 +56,4 @@ public class Command {
         this.color = color;
     }
 
-    @Override
-    public String toString() {
-        return "Command{" +
-                "id='" + id + '\'' +
-                ", action='" + action + '\'' +
-                ", pointX='" + pointX + '\'' +
-                ", pointY='" + pointY + '\'' +
-                ", color='" + color + '\'' +
-                '}';
-    }
 }
