@@ -56,17 +56,16 @@ public class Server {
 
                     }
                 } catch (SocketException e) {
+                    //nothing to do
                 }
             } finally {
                 System.out.println("Client disconnected");
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println(e);
+            throw new RuntimeException(e.getMessage());
         } finally {
             System.out.println("Server shutdown");
         }
-
     }
 
     private void delay() {

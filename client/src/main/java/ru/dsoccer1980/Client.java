@@ -15,6 +15,7 @@ public class Client extends Thread {
 
     private final String HOST = "localhost";
     private final int PORT = 29288;
+    private final Color DEFAULT_COLOR = Color.black;
     private Frame frame;
 
     public Client() {
@@ -49,16 +50,15 @@ public class Client extends Thread {
                 }
 
                 if (commandQueue.size() == 3) {
-                    getValuesAndPaintComponent(commandQueue);
+                    getValuesAndPaintCurve(commandQueue);
                 }
-
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
     }
 
-    private void getValuesAndPaintComponent(Queue<Command> commandQueue) {
+    private void getValuesAndPaintCurve(Queue<Command> commandQueue) {
         Command command = commandQueue.poll();
         float x1 = Float.valueOf(command.getPointX());
         float y1 = Float.valueOf(command.getPointY());
@@ -68,7 +68,7 @@ public class Client extends Thread {
         command = commandQueue.peek();
         float x3 = Float.valueOf(command.getPointX());
         float y3 = Float.valueOf(command.getPointY());
-        Color color = Color.black;
+        Color color = DEFAULT_COLOR;
         if (Integer.valueOf(command.getColor()) == -16777216) {
             color = Color.black;
         }
