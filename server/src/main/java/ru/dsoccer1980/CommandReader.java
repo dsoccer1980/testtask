@@ -30,10 +30,5 @@ public class CommandReader extends Thread {
         }
     }
 
-    //TODO проверить формат
-    private boolean hasRightFormat(String[] record) {
-        return record.length == 5;
-    }
-
 
 }

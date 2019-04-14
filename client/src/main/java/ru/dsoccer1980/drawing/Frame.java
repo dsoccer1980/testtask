@@ -11,7 +11,7 @@ public class Frame extends JFrame {
     int width = (int) screenSize.getWidth();
     int height = (int) screenSize.getHeight();
     private JButton button;
-    private LinesComponent linesComponent;
+    private CurvesComponent curvesComponent;
     private JPanel buttonsPanel;
 
     public Frame() {
@@ -25,7 +25,7 @@ public class Frame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         add(buttonsPanel, BorderLayout.EAST);
-        add(linesComponent, BorderLayout.CENTER);
+        add(curvesComponent, BorderLayout.CENTER);
 
         pack();
         setVisible(true);
@@ -39,8 +39,8 @@ public class Frame extends JFrame {
     }
 
     private void initLinesComponent() {
-        linesComponent = new LinesComponent();
-        linesComponent.setPreferredSize(new Dimension(width, height));
+        curvesComponent = new CurvesComponent();
+        curvesComponent.setPreferredSize(new Dimension(width, height));
     }
 
     private void initButtonsPanel() {
@@ -52,7 +52,7 @@ public class Frame extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth();
         int height = (int) screenSize.getHeight();
-        linesComponent.addCurve(
+        curvesComponent.addCurve(
                 x1 * width, y1 * height,
                 x2 * width, y2 * height,
                 x3 * width, y3 * height);

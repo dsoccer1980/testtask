@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.geom.QuadCurve2D;
 import java.util.LinkedList;
 
-public class LinesComponent extends JComponent {
+public class CurvesComponent extends JComponent {
 
     private final LinkedList<Curve> curves = new LinkedList<>();
 

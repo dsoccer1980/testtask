@@ -28,17 +28,18 @@ public class Server {
                 out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
                 new CommandReader().start();
                 try {
-                    out.write("Привет, это Сервер! \n");
-                    out.flush();
-
-                    while (!out.toString().equals("exit")) {
+                    while (clientSocket.isConnected()) {
                         String command = Server.queue.poll();
                         if (command != null) {
                             out.write(command + "\n");
                             out.flush();
                             System.out.println(command);
+                            try {
+                                Thread.sleep(50);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-
                     }
                 } finally {
                     clientSocket.close();

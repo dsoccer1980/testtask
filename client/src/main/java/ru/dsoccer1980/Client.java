@@ -31,34 +31,24 @@ public class Client extends Thread {
     private void createConnection() {
         try {
             try {
-
                 clientSocket = new Socket(HOST, PORT);
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String stringFromServer;
-                Queue<Command> queue = new ArrayDeque<>();
+                Queue<Command> commandQueue = new ArrayDeque<>();
 
-                while (!in.toString().equals("exit")) {
+                while (clientSocket.isConnected()) {
                     stringFromServer = in.readLine();
 
                     String[] record = stringFromServer.split(";");
                     if (hasRightFormat(record)) {
                         if (record[1].equals("start")) {
-                            queue.clear();
+                            commandQueue.clear();
                         }
-                        queue.add(new Command(record[0], record[1], record[2], record[3], record[4]));
+                        commandQueue.add(new Command(record[0], record[1], record[2], record[3], record[4]));
                     }
 
-                    if (queue.size() == 3) {
-                        Command command = queue.poll();
-                        float x1 = Float.valueOf(command.getPointX());
-                        float y1 = Float.valueOf(command.getPointY());
-                        command = queue.peek();
-                        float x2 = Float.valueOf(command.getPointX());
-                        float y2 = Float.valueOf(command.getPointY());
-                        command = queue.peek();
-                        float x3 = Float.valueOf(command.getPointX());
-                        float y3 = Float.valueOf(command.getPointY());
-                        frame.paintCurve(x1, y1, x2, y2, x3, y3);
+                    if (commandQueue.size() == 3) {
+                        paintCurve(commandQueue);
                     }
 
                     System.out.println(stringFromServer);
@@ -71,7 +61,19 @@ public class Client extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    private void paintCurve(Queue<Command> commandQueue) {
+        Command command = commandQueue.poll();
+        float x1 = Float.valueOf(command.getPointX());
+        float y1 = Float.valueOf(command.getPointY());
+        command = commandQueue.peek();
+        float x2 = Float.valueOf(command.getPointX());
+        float y2 = Float.valueOf(command.getPointY());
+        command = commandQueue.peek();
+        float x3 = Float.valueOf(command.getPointX());
+        float y3 = Float.valueOf(command.getPointY());
+        frame.paintCurve(x1, y1, x2, y2, x3, y3);
     }
 
     //TODO проверить формат
