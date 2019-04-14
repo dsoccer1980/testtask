@@ -5,22 +5,20 @@ import ru.dsoccer1980.domain.Curve;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Frame extends JFrame {
 
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final int width = (int) screenSize.getWidth();
     private final int height = (int) screenSize.getHeight();
-    private JButton button;
     private CurvesComponent curvesComponent;
-    private JPanel buttonsPanel;
     private Client client;
 
     public Frame(Client client) {
         this.client = client;
-        initButton();
         initCurvesComponent();
-        initButtonsPanel();
         initFrame();
     }
 
@@ -36,27 +34,22 @@ public class Frame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setBackground(Color.white);
 
-        add(buttonsPanel, BorderLayout.EAST);
         add(curvesComponent, BorderLayout.CENTER);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if ((e.getClickCount() == 2) && !client.isStarted()) {
+                    client.start();
+                }
+            }
+        });
 
         pack();
         setVisible(true);
-    }
-
-    private void initButton() {
-        button = new JButton("Connect with server");
-        button.addActionListener((listener) -> client.start());
     }
 
     private void initCurvesComponent() {
         curvesComponent = new CurvesComponent();
         curvesComponent.setPreferredSize(new Dimension(width, height));
     }
-
-    private void initButtonsPanel() {
-        buttonsPanel = new JPanel();
-        buttonsPanel.add(button);
-    }
-
-
 }

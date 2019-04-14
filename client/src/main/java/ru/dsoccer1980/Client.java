@@ -16,6 +16,7 @@ public class Client extends Thread {
     private final static String HOST = "localhost";
     private final static int PORT = 29288;
     private Frame frame;
+    private boolean isStarted = false;
 
     public Client() {
         this.frame = new Frame(this);
@@ -23,6 +24,7 @@ public class Client extends Thread {
 
     @Override
     public void run() {
+        isStarted = true;
         createConnection();
     }
 
@@ -78,4 +80,7 @@ public class Client extends Thread {
         return record.length == 5;
     }
 
+    public boolean isStarted() {
+        return isStarted;
+    }
 }
