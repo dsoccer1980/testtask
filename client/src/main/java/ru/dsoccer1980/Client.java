@@ -16,7 +16,10 @@ public class Client extends Thread {
     private final static String HOST = "localhost";
     private final static int PORT = 29288;
     private Frame frame;
-    private boolean isStarted = false;
+
+    public static void main(String[] args) {
+        new Client();
+    }
 
     public Client() {
         this.frame = new Frame(this);
@@ -24,7 +27,6 @@ public class Client extends Thread {
 
     @Override
     public void run() {
-        isStarted = true;
         createConnection();
     }
 
@@ -75,12 +77,9 @@ public class Client extends Thread {
         frame.paintCurve(x1, y1, x2, y2, x3, y3, color);
     }
 
-    //TODO проверить формат
     private boolean hasRightFormat(String[] record) {
         return record.length == 5;
     }
 
-    public boolean isStarted() {
-        return isStarted;
-    }
+
 }
