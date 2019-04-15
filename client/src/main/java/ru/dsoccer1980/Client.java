@@ -16,6 +16,7 @@ public class Client extends Thread {
     private final String HOST = "localhost";
     private final int PORT = 29288;
     private final Color DEFAULT_COLOR = Color.black;
+    private final int POINTS_COUNT_TO_DRAW_CURVE = 3;
     private Frame frame;
 
     public Client() {
@@ -49,7 +50,7 @@ public class Client extends Thread {
                     commandQueue.add(new Command(record[0], record[1], record[2], record[3], record[4]));
                 }
 
-                if (commandQueue.size() == 3) {
+                if (commandQueue.size() == POINTS_COUNT_TO_DRAW_CURVE) {
                     getValuesAndPaintCurve(commandQueue);
                 }
             }
