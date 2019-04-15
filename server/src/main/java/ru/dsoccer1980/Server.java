@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
+import java.util.function.Supplier;
 
 public class Server {
 
@@ -19,7 +19,7 @@ public class Server {
     }
 
     public Server(String fileName) {
-        this.fileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8);
+        this.fileName = decode(fileName);
     }
 
     public static void main(String[] args) {
@@ -38,7 +38,7 @@ public class Server {
                  BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
                 System.out.println("Client connected");
 
-                try (InputStream inputStream = Objects.requireNonNullElseGet(
+                try (InputStream inputStream = requireNonNullElseGet(
                         Server.class.getClassLoader().getResourceAsStream(fileName),
                         this::getInputStreamFromExternalFile);
                      BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
@@ -82,5 +82,24 @@ public class Server {
         } catch (FileNotFoundException e) {
             throw new RuntimeException("File not found");
         }
+    }
+
+    private String decode(String fileName) {
+        try {
+            return URLDecoder.decode(fileName, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    private static <T> T requireNonNullElseGet(T obj, Supplier<? extends T> supplier) {
+        return (obj != null) ? obj
+                : requireNonNull(requireNonNull(supplier, "supplier").get(), "supplier.get()");
+    }
+
+    private static <T> T requireNonNull(T obj, String message) {
+        if (obj == null)
+            throw new NullPointerException(message);
+        return obj;
     }
 }
